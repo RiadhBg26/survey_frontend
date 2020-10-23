@@ -1,0 +1,26 @@
+
+
+    <div class="container mt-4">
+        <form [formGroup]="loginForm">
+            <h2 class="text-center">Register</h2>
+        <div class="row jumbotron">
+            <div class="col-sm-4 form-group">
+                <label for="email">Email</label>
+                <input type="email" class="form-control"
+                 name="email" id="email" placeholder="Enter your email." required
+                 formControlName="email">
+            </div>
+            <div class="col-sm-4 form-group">
+                <label for="pass">Password</label>
+                <input type="Password" name="password" class="form-control"
+                 id="pass" placeholder="Enter your password." required
+                 formControlName="password">
+            </div>
+
+            <div class="col-sm-12 form-group mb-0">
+               <button class="btn btn-primary offset-6" (click)="login()">Login</button>
+            </div>
+            
+        </div>
+        </form>
+    </div>
