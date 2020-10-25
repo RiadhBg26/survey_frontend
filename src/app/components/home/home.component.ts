@@ -1,3 +1,4 @@
+import { error } from '@angular/compiler/src/util';
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
@@ -32,14 +33,15 @@ export class HomeComponent implements OnInit {
   noCounter
   tab;
   disable = false
-  surveyId
-  select : FormControl
+  err = false
+  success = false
+  select: FormControl
   constructor(private surveyService: SurveyService,
     private userService: UserService,
     private router: Router,
     private route: ActivatedRoute,) {
-      this.select = new FormControl()
-     }
+    this.select = new FormControl()
+  }
 
   ngOnInit(): void {
 
@@ -47,10 +49,7 @@ export class HomeComponent implements OnInit {
     this.route.paramMap.subscribe(params => {
       this.id = params.get('id');
       this.userService.getSingleUser(this.id).subscribe(data => {
-        // this.user = Array.of(data)
         this.user = data
-        this.surveys = this.user.subjects
-        // console.log('surveys: ', this.user);
         this.surveys = this.user.subjects
 
       });
@@ -62,67 +61,48 @@ export class HomeComponent implements OnInit {
   getUsers() {
     this.userService.getUser().subscribe((res: UserResponse) => {
       this.users = res.users
-      // console.log(this.users);
     })
   }
   getSurveys() {
     this.surveyService.getSurveys().subscribe((data: SurveyResponse) => {
       this.surveys = data.surveys
-      // console.log(this.surveys);
       for (let i = 0; i < this.surveys.length; i++) {
         this.yesPercentage = this.surveys[i].yesPercentage
         this.noPercentage = this.surveys[i].noPercentage
-        // console.log(this.yesPercentage, this.noPercentage);
       }
     })
   }
 
-submitChoice(id) {
-    
-  
-  console.log(this.tab);
-  localStorage.setItem('answered surveys', JSON.stringify(this.tab))
+  submitChoice(id) {
+    const data = { choice: this.select.value };
+    const surveys = { id: id, answered: true }
+    if (this.select.value === 'no' || this.select.value == 'yes') {
 
-  const data = { choice: this.select.value };
-  const surveys = { id: id, answered: true }
-  if (this.select.value === 'no' || this.select.value == 'yes') {
-    if (this.tab) {
-      for (let j = 0; j < this.tab.length; j++) {
-        const element = this.tab[j];
-        console.log(element);
-        if (id == this.tab[j].id && this.tab[j].answered == true) {
-          // this.message = "you already answered this survey"
-          alert("you already answered this survey")
-          return
-        } else {
-          console.log('false');
-          this.surveyService.editSurvey(id, data).subscribe(res => {
-            // this.message = "answer saved"
-            alert("answer saved")
-            // this.tab.push(surveys)
-            // localStorage.setItem('answered surveys', JSON.stringify(this.tab));
-            return
-          })
-        }
-      }
-    }else {
-      console.log('true');
-      this.surveyService.editSurvey(id, data).subscribe(res => {
-        // this.message = "answer saved"
-        alert("answer saved")
-        // this.tab.push(surveys)
-        // localStorage.setItem('answered surveys', JSON.stringify(this.tab));
+      this.surveyService.editSurvey(id, data).subscribe((res: SurveyEditionResponse) => {
+        this.message = res.message
+        console.log(this.message);
+        if (this.message == 'answer saved !') {
+          this.success = true
+          this.err = false
+        }else
+        this.success = false
+        this.err = true
         return
       })
-    }
-  } else {
-    // this.message = 'answer should be only yes or no'
-    alert('answer should be only yes or no')
-    return
+    }else {
+        this.success = false
+        this.err = true
+          this.message = 'answer should be only yes or no'
+          return
+        }
   }
+
+  
+
 }
 
 
-
-
+export interface SurveyEditionResponse {
+  message: string;
+  survey: SurveyModelServer
 }

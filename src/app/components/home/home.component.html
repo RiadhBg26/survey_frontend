@@ -1,70 +1,78 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand" href="#">Navbar</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
     </button>
-  
+
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item">
-          <a class="nav-link" [routerLink]="['/add_survey', id]">Add survey</a>
-        </li>
-        
-        <li class="nav-item active">
-            <a class="nav-link" [routerLink]="['/home', id]">Home <span class="sr-only">(current)</span></a>
-          </li>
-      </ul>
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" [routerLink]="['/add_survey', id]">Add survey</a>
+            </li>
+
+            <li class="nav-item active">
+                <a class="nav-link" [routerLink]="['/home', id]">Home <span class="sr-only">(current)</span></a>
+            </li>
+        </ul>
     </div>
-    
+
     <form class="form-inline my-2 my-lg-0">
         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Logout</button>
-      </form>
-  </nav>
+    </form>
+</nav>
 
 <h2 class="text-center mt-4">Surveys list</h2>
 <div class="container">
 
-<!-- <div class="form-group">
-    <div *ngIf="message">
-        {{message}}
-    </div>
-</div> -->
-<div class="card" *ngFor="let user of users; let i = index">
-    <div class="card-body" *ngFor="let survey of users[i].subjects; let i = index">
-        <div>
 
-            <h1>surveys of user: {{survey?.userId?.email}}</h1>
-            <div class="row jumbotron ">
-                <div class="col-sm-4 form-group">
-                    <label for="ttile">title</label>
-                    <input type="text" class="form-control" readonly value="{{survey.title}}">
-                </div>
-                <div class="col-sm-4 form-group">
-                    <label for="pass">description</label>
-                    <textarea type="text" class="form-control" id="pass" readonly>{{survey.description}}</textarea>
-                </div>
+    <ng-container *ngIf="err">
+        <span class="text-danger align-middle">
+            <i class="fa fa-close">{{message}}</i>
+        </span>
+    </ng-container>
+    
+    <ng-container
+    *ngIf="success">
+    <span class="text-success align-middle">
+        <i class="fa fa-check"> {{message}}</i>
+    </span>
+</ng-container>
+    <div class="card" *ngFor="let user of users; let i = index">
+        <div class="card-body" *ngFor="let survey of users[i].subjects; let i = index">
+            <div>
 
-                <div class="col-sm-4 form-group">
-                    <label for="ttile">reply</label>
-                    <input type="text" class="form-control" [formControl]="select"
-                    [disabled]="disable == true">
-                </div>
-                <div class="form-group">
-                    <div>
-                        YES: {{survey.yesPercentage.toFixed(2) }} %
+                <h1>surveys of user: {{survey?.userId?.email}}</h1>
+                <div class="row jumbotron ">
+                    <div class="col-sm-4 form-group">
+                        <label for="ttile">title</label>
+                        <input type="text" class="form-control" readonly value="{{survey.title}}">
                     </div>
-                    
-                    <div>
-                        NO: {{survey.noPercentage.toFixed(2) }} %
+                    <div class="col-sm-4 form-group">
+                        <label for="pass">description</label>
+                        <textarea type="text" class="form-control" id="pass" readonly>{{survey.description}}</textarea>
                     </div>
-                </div>
 
-                <div class="col-sm-12 form-group mb-0">
-                    <button class="btn btn-danger offset-6" (click)="submitChoice(survey._id)">submit</button>
+                    <div class="col-sm-4 form-group">
+                        <label for="ttile">reply</label>
+                        <input type="text" class="form-control" [formControl]="select" [disabled]="disable == true">
+                    </div>
+                    <div class="form-group">
+                        <div>
+                            YES: {{survey.yesPercentage.toFixed(2) }} %
+                        </div>
+
+                        <div>
+                            NO: {{survey.noPercentage.toFixed(2) }} %
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12 form-group mb-0">
+                        <button class="btn btn-danger offset-6" (click)="submitChoice(survey._id)">submit</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
 </div>

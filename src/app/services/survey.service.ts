@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http'
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import {SurveyModelServer, SurveyResponse } from '../../../models/surveyModel';
+import { SurveyEditionResponse } from '../components/home/home.component';
 
 const httpOptions = {
   headers: new HttpHeaders({'Content-Type': 'application/json'})
@@ -36,8 +37,8 @@ export class SurveyService {
     return this.httpClient.delete<SurveyModelServer>(this.SERVER_URL + '/survey/' + id);
   }
   
-  editSurvey(id: number, data: any): Observable <SurveyModelServer> {
-    return this.httpClient.put<SurveyModelServer>(this.SERVER_URL + '/survey/' + id, data, httpOptions)
+  editSurvey(id: number, data: any): Observable <SurveyEditionResponse> {
+    return this.httpClient.put<SurveyEditionResponse>(this.SERVER_URL + '/survey/' + id, data, httpOptions)
   };
 
 }
