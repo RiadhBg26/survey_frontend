@@ -32,7 +32,7 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     this.loginForm = new FormGroup({
       email: new FormControl('test@gmail.com', [Validators.required]),
-      password: new FormControl('xxxXXX', [Validators.required]),
+      password: new FormControl('test', [Validators.required]),
     })
   }
 
@@ -45,10 +45,14 @@ export class LoginComponent implements OnInit {
       this.userService.UserLogin(this.loginForm.value).subscribe((loginResponse: UserLoginResponse) => {
         this.user = loginResponse.user
         this.id = loginResponse.userId;
-        console.log(loginResponse.userId);
+        const token = loginResponse.token;
+        let storedToken = localStorage.setItem('token', token.toString())
+        console.log(storedToken);
+        
+        // console.log(loginResponse.userId);
 
         this.router.navigate(['/add_survey', this.id])
-        console.log(this.id);
+        // console.log(this.id);
       })
     } else {
       return

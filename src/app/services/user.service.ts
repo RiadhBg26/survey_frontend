@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Observable, throwError } from 'rxjs';
 import { ResponseData, UserLoginResponse, UserModelServer, UserResponse } from '../../../models/userModel';
@@ -20,9 +20,12 @@ export class UserService {
 
 
   /* ____________________________API ROUTES_________________________________________ */
-
+  getUserName(): Observable<any> {
+    return this.httpClient.get<any>(this.SERVER_URL + '/users/username', {
+      params: new HttpParams().append('token', localStorage.getItem('token'))})
+  }
   // GET ALL UserS
-  getUser(numberOfResults = 10): Observable<UserResponse> {
+  getUsers(numberOfResults = 10): Observable<UserResponse> {
     return this.httpClient.get<UserResponse>(this.SERVER_URL + '/users', {
       params: {
         limits: numberOfResults.toString()
@@ -32,7 +35,9 @@ export class UserService {
 
   //get single User
   getSingleUser(id: number): Observable<UserModelServer> {
-    return this.httpClient.get<UserModelServer>(this.SERVER_URL + '/users/' + id);
+    return this.httpClient.get<UserModelServer>(this.SERVER_URL + '/users/' + id, {
+      params: new HttpParams().append('token', localStorage.getItem('token'))
+    });
 
   };
 

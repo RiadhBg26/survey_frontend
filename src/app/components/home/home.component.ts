@@ -32,6 +32,7 @@ export class HomeComponent implements OnInit {
   choices: any
   noCounter
   tab;
+  username: string
   disable = false
   err = false
   success = false
@@ -40,6 +41,8 @@ export class HomeComponent implements OnInit {
     private userService: UserService,
     private router: Router,
     private route: ActivatedRoute,) {
+      
+    this.getUsername()
     this.select = new FormControl()
   }
 
@@ -58,23 +61,29 @@ export class HomeComponent implements OnInit {
     this.getUsers()
     // this.disableInput()
   }
+  getUsername() {
+    this.userService.getUserName().subscribe(
+      data => this.username = data.toString(),
+      error => this.router.navigate(['/login'])
+    )
+  }
   getUsers() {
-    this.userService.getUser().subscribe((res: UserResponse) => {
+    this.userService.getUsers().subscribe((res: UserResponse) => {
       this.users = res.users
     })
   }
   getSurveys() {
     this.surveyService.getSurveys().subscribe((data: SurveyResponse) => {
       this.surveys = data.surveys
-      
-      
-    console.log(this.surveys);
+
+
+      console.log(this.surveys);
       for (let i = 0; i < this.surveys.length; i++) {
         this.yesPercentage = this.surveys[i].yesPercentage
         this.noPercentage = this.surveys[i].noPercentage
-        
+
       }
-    
+
     })
   }
 
@@ -89,20 +98,22 @@ export class HomeComponent implements OnInit {
         if (this.message == 'answer saved !') {
           this.success = true
           this.err = false
-        }else
-        this.success = false
+        } else
+          this.success = false
         this.err = true
         return
       })
-    }else {
-        this.success = false
-        this.err = true
-          this.message = 'answer should be only yes or no'
-          return
-        }
+    } else {
+      this.success = false
+      this.err = true
+      this.message = 'answer should be only yes or no'
+      return
+    }
   }
 
-  
+  logout() {
+    localStorage.removeItem('token')
+  }
 
 }
 

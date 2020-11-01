@@ -36,8 +36,8 @@ export class RegistrationComponent implements OnInit {
 
     this.registrationForm = new FormGroup({
       email: new FormControl('test@gmail.com', [Validators.required, Validators.pattern(this.emailPattern)]),
-      password: new FormControl('xxxXXX', [Validators.required, Validators.minLength(6)]),
-      confirmPassword: new FormControl('xxxXXX', [Validators.required, Validators.minLength(6)])
+      password: new FormControl('test', [Validators.required, Validators.minLength(4)]),
+      confirmPassword: new FormControl('test', [Validators.required, Validators.minLength(4)])
     });
   }
 
@@ -65,6 +65,7 @@ export class RegistrationComponent implements OnInit {
       this.userService.registerUser(this.registrationForm.value).subscribe(res => {
         console.log(res);
       })
+      
       this.router.navigate(['/login'])
     };
   };

@@ -17,13 +17,15 @@ export class SurveyComponent implements OnInit {
   title: string;
   description: string;
   choice: string
-
+  username: string
   user: UserModelServer
   surveys: any[] = []
   constructor(private surveyService: SurveyService,
     private userService: UserService,
     private router: Router,
-    private route: ActivatedRoute,) { }
+    private route: ActivatedRoute) {
+      this.getUsername()
+    }
 
   ngOnInit(): void {
     //get single user    
@@ -34,38 +36,47 @@ export class SurveyComponent implements OnInit {
         // this.user = Array.of(data)
         this.user = data
         this.surveys = this.user.surveys
-        console.log('surveys: ', this.user);
+        // console.log('surveys: ', this.user);
         this.surveys = this.user.surveys
-
       });
     });
   }
 
-  // getSurveys() {
-  //   this.surveyService.getSurveys().subscribe((data: SurveyResponse) => {
-  //     this.surveys = data.surveys
-  //   })
-  // }
-  saveReq() {
-    const survey = {
-      userId: this.id,
-      title: this.title.trim(),
-      description: this.description.trim(),
-      choice: this.choice,
+  
+    // getSurveys() {
+    //   this.surveyService.getSurveys().subscribe((data: SurveyResponse) => {
+    //     this.surveys = data.surveys
+    //   })
+    // }
+    getUsername(){
+      this.userService.getUserName().subscribe(
+        data => this.username = data.toString(),
+        error => this.router.navigate(['/login'])
+      )
     }
-    this.surveyService.postSurvey(survey).subscribe(res => {
-      console.log(res);
-    })
-    this.title = "";
-    this.description = ""
-  }
+    saveReq() {
+      const survey = {
+        userId: this.id,
+        title: this.title.trim(),
+        description: this.description.trim(),
+        choice: this.choice,
+      }
+      this.surveyService.postSurvey(survey).subscribe(res => {
+        console.log(res);
+      })
+      this.title = "";
+      this.description = ""
+    }
 
-  deleteSurvey(id) {
-    this.surveyService.deleteSurvey(id).subscribe(res => {
+    deleteSurvey(id) {
+      this.surveyService.deleteSurvey(id).subscribe(res => {
         this.surveys.slice(id, 1)
         console.log(res);
         this.surveys = this.surveys
-    })
-  }
+      })
+    }
 
-}
+    logout() {
+      localStorage.removeItem('token')
+    }
+  }

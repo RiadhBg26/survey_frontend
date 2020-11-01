@@ -19,6 +19,12 @@ import { LoginComponent } from './components/login/login.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HomeComponent } from './components/home/home.component';
 
+
+import {MatInputModule} from '@angular/material/input';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+// import {MatButtonModule } from '@angular/material';
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -38,6 +44,7 @@ import { HomeComponent } from './components/home/home.component';
     MatChipsModule,
     MatFormFieldModule,
     MatIconModule,
+    
     
   ],
   providers: [],
