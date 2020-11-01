@@ -39,7 +39,7 @@
     </span>
 </ng-container>
     <div class="card" *ngFor="let user of users; let i = index">
-        <div class="card-body" *ngFor="let survey of users[i].subjects; let i = index">
+        <div class="card-body" *ngFor="let survey of users[i].surveys; let i = index">
             <div>
 
                 <h1>surveys of user: {{survey?.userId?.email}}</h1>

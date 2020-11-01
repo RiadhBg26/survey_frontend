@@ -2,7 +2,8 @@ export interface UserModelServer {
     _id: any;
     email: string;
     password: string;
-    subjects: string[],
+    surveys: any[],
+    answeredSurveys: any[]
     votes: number
 }
 

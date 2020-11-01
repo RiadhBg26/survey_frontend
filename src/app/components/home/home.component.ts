@@ -50,7 +50,7 @@ export class HomeComponent implements OnInit {
       this.id = params.get('id');
       this.userService.getSingleUser(this.id).subscribe(data => {
         this.user = data
-        this.surveys = this.user.subjects
+        this.surveys = this.user.surveys
 
       });
     });
@@ -66,10 +66,15 @@ export class HomeComponent implements OnInit {
   getSurveys() {
     this.surveyService.getSurveys().subscribe((data: SurveyResponse) => {
       this.surveys = data.surveys
+      
+      
+    console.log(this.surveys);
       for (let i = 0; i < this.surveys.length; i++) {
         this.yesPercentage = this.surveys[i].yesPercentage
         this.noPercentage = this.surveys[i].noPercentage
+        
       }
+    
     })
   }
 

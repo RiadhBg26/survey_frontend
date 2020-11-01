@@ -33,9 +33,9 @@ export class SurveyComponent implements OnInit {
       this.userService.getSingleUser(this.id).subscribe(data => {
         // this.user = Array.of(data)
         this.user = data
-        this.surveys = this.user.subjects
+        this.surveys = this.user.surveys
         console.log('surveys: ', this.user);
-        this.surveys = this.user.subjects
+        this.surveys = this.user.surveys
 
       });
     });

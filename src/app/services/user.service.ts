@@ -19,11 +19,11 @@ export class UserService {
   constructor(private httpClient: HttpClient, private router: Router) { }
 
 
- /* ____________________________API ROUTES_________________________________________ */
+  /* ____________________________API ROUTES_________________________________________ */
 
   // GET ALL UserS
   getUser(numberOfResults = 10): Observable<UserResponse> {
-    return this.httpClient.get<UserResponse>(this.SERVER_URL + '/user', {
+    return this.httpClient.get<UserResponse>(this.SERVER_URL + '/users', {
       params: {
         limits: numberOfResults.toString()
       }
@@ -32,24 +32,24 @@ export class UserService {
 
   //get single User
   getSingleUser(id: number): Observable<UserModelServer> {
-    return this.httpClient.get<UserModelServer>(this.SERVER_URL + '/user/' + id);
+    return this.httpClient.get<UserModelServer>(this.SERVER_URL + '/users/' + id);
 
   };
 
   // REGISTER User
   registerUser(data: any): Observable<ResponseData> {
     // console.log({ data });
-    return this.httpClient.post<ResponseData>(`${this.SERVER_URL}/user/signup`, data, httpOptions)
+    return this.httpClient.post<ResponseData>(`${this.SERVER_URL}/users/signup`, data)
   }
   //EDIT User
   editUser(id: number, data: any, image?: any): Observable<UserModelServer> {
-    return this.httpClient.put<UserModelServer>(this.SERVER_URL + '/user/' + id, data, httpOptions)
+    return this.httpClient.put<UserModelServer>(this.SERVER_URL + '/users/' + id, data, httpOptions)
   };
 
 
   // LOGIN User
   UserLogin(data: any): Observable<UserLoginResponse> {
-    return this.httpClient.post<UserLoginResponse>(`${this.SERVER_URL}/user/login`, data)
+    return this.httpClient.post<UserLoginResponse>(`${this.SERVER_URL}/users/login`, data)
   }
 
 
