@@ -1,32 +1,9 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="#">Navbar</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a class="nav-link" [routerLink]="['/add_survey', id]">Add survey</a>
-            </li>
-
-            <li class="nav-item active">
-                <a class="nav-link" [routerLink]="['/home', id]">Home <span class="sr-only">(current)</span></a>
-            </li>
-        </ul>
-    </div>
-
-    <form class="form-inline my-2 my-lg-0">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit" (click)="logout()">Logout</button>
-    </form>
-</nav>
 
 <h2 class="text-center mt-4">Surveys list</h2>
 <div class="container">
 
 
-    <ng-container *ngIf="err">
+    <!-- <ng-container *ngIf="err">
         <span class="text-danger align-middle">
             <i class="fa fa-close">{{message}}</i>
         </span>
@@ -37,7 +14,7 @@
     <span class="text-success align-middle">
         <i class="fa fa-check"> {{message}}</i>
     </span>
-</ng-container>
+</ng-container> -->
     <div class="card" *ngFor="let user of users; let i = index">
         <div class="card-body" *ngFor="let survey of users[i].surveys; let i = index">
             <div>

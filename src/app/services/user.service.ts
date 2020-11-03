@@ -20,8 +20,8 @@ export class UserService {
 
 
   /* ____________________________API ROUTES_________________________________________ */
-  getUserName(): Observable<any> {
-    return this.httpClient.get<any>(this.SERVER_URL + '/users/username', {
+  getSecuredRoute(): Observable<any> {
+    return this.httpClient.get<any>(this.SERVER_URL + '/users/securedpage', {
       params: new HttpParams().append('token', localStorage.getItem('token'))})
   }
   // GET ALL UserS
@@ -36,7 +36,7 @@ export class UserService {
   //get single User
   getSingleUser(id: number): Observable<UserModelServer> {
     return this.httpClient.get<UserModelServer>(this.SERVER_URL + '/users/' + id, {
-      params: new HttpParams().append('token', localStorage.getItem('token'))
+      // params: new HttpParams().append('token', localStorage.getItem('token'))
     });
 
   };
@@ -53,10 +53,11 @@ export class UserService {
 
 
   // LOGIN User
-  UserLogin(data: any): Observable<UserLoginResponse> {
+  login(data: any): Observable<UserLoginResponse> {
     return this.httpClient.post<UserLoginResponse>(`${this.SERVER_URL}/users/login`, data)
   }
 
+  
 
   // ERROR HANDLING
   handleError(error: HttpErrorResponse) {

@@ -1,25 +1,3 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="#">Hello {{username}}</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a class="nav-link" [routerLink]="['/add_survey', id]">Add survey</a>
-        </li>
-        
-        <li class="nav-item ">
-            <a class="nav-link" [routerLink]="['/home', id]">Home <span class="sr-only">(current)</span></a>
-          </li>
-      </ul>
-    </div>
-    
-    <form class="form-inline my-2 my-lg-0">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit" (click)="logout()">Logout</button>
-      </form>
-  </nav>
 
 <div class="container mt-4">
     <div>
@@ -34,12 +12,8 @@
                 <textarea type="text" class="form-control" id="pass" placeholder="description" required
                     [(ngModel)]="description"></textarea>
             </div>
-            <!-- <div class="col-sm-4 form-group">
-                <label for="pass">choice</label>
-                <input type="text" class="form-control" required [(ngModel)]="choice">
-            </div> -->
             <div class="col-sm-12 form-group mb-0">
-                <button class="btn btn-primary offset-6" (click)="saveReq()">save survey</button>
+                <button class="btn btn-primary offset-6" (click)="postSurvey()">save survey</button>
             </div>
         </div>
     </div>
@@ -58,7 +32,7 @@
                 </div>
                 
                 <div class="col-sm-12 form-group mb-0">
-                    <button class="btn btn-danger offset-6" (click)="deleteSurvey(survey._id)">-</button>
+                    <button class="btn btn-danger offset-6" (click)="deleteSurvey(survey._id)">Delete</button>
                 </div>
             </div>
         </div>

@@ -8,6 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { UserLoginResponse, UserModelServer, UserResponse } from '../../../../models/userModel';
+import { AuthService } from 'src/app/services/auth.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -27,7 +28,8 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private userService: UserService,
-    private httpClient: HttpClient) { }
+    private httpClient: HttpClient,
+    private authService: AuthService) { }
 
   ngOnInit(): void {
     this.loginForm = new FormGroup({
@@ -42,16 +44,15 @@ export class LoginComponent implements OnInit {
 
   login() {
     if (this.loginForm.valid) {
-      this.userService.UserLogin(this.loginForm.value).subscribe((loginResponse: UserLoginResponse) => {
+      this.userService.login(this.loginForm.value).subscribe((loginResponse: UserLoginResponse) => {
         this.user = loginResponse.user
         this.id = loginResponse.userId;
         const token = loginResponse.token;
         let storedToken = localStorage.setItem('token', token.toString())
-        console.log(storedToken);
-        
-        // console.log(loginResponse.userId);
-
-        this.router.navigate(['/add_survey', this.id])
+        // this.authService.storeUserData(token, this.id)
+        // console.log(this.authService.storeUserData(token, this.id));
+        // this.authService.storeUserData(token);
+        this.router.navigate(['/add_survey'], {queryParams: {token}})
         // console.log(this.id);
       })
     } else {

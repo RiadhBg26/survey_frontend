@@ -64,9 +64,8 @@ export class RegistrationComponent implements OnInit {
     } else {
       this.userService.registerUser(this.registrationForm.value).subscribe(res => {
         console.log(res);
+        this.router.navigate(['/login'])
       })
-      
-      this.router.navigate(['/login'])
     };
   };
 };
