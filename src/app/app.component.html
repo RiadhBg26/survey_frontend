@@ -1,34 +1,47 @@
+<ngx-spinner
+  bdColor="rgba(51,51,51,0.8)"
+  size="medium"
+  color="#fff"
+  type="ball-scale-multiple"
+>
+  <p style="font-size: 20px; color: white">Loading...</p>
+</ngx-spinner>
+
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand">{{username}}</a>
-    <a class="navbar-brand" href="#" *ngIf="!authGuard.auth.isAuthenticated()">Survey App</a>
+    <a class="navbar-brand">{{message}}</a>
+    <a class="navbar-brand" *ngIf="!authGuard.auth.getJwtToken()">Survey App</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item" *ngIf='authGuard.auth.isAuthenticated()'>
+        <ul class="navbar-nav mr-auto"  *ngIf='authGuard.auth.getJwtToken()'>
+            <li class="nav-item">
                 <!-- <a class="nav-link" [routerLink]="['/add_survey', id]" [queryParams]="{ token: token }">Add survey</a> -->
                 <a class="nav-link" [routerLink]="['/add_survey']" [queryParams]="{ token: token }">Add survey</a>
 
             </li>
 
-            <li class="nav-item active" *ngIf='authGuard.auth.isAuthenticated()'>
+            <li class="nav-item active" >
                 <a class="nav-link" [routerLink]="['/home']" [queryParams]="{ token: token }">Home <span class="sr-only">(current)</span></a>
             </li>
         </ul>
     </div>
 
-    <form class="form-inline my-2 my-lg-0" *ngIf='authGuard.auth.isAuthenticated()'>
+    <form class="form-inline my-2 my-lg-0" *ngIf='authGuard.auth.getJwtToken()'>
         <button class="btn btn-outline-success my-2 my-sm-0" type="submit" (click)="logout()">Logout</button>
     </form>
-    <form class="form-inline my-2 my-lg-0 pr-2" *ngIf='!authGuard.auth.isAuthenticated()'>
+    <form class="form-inline my-2 my-lg-0 pr-2" *ngIf='!authGuard.auth.getJwtToken()'>
         <button class="btn btn-outline-primary my-2 my-sm-0" type="submit" routerLink="/login">Login</button>
     </form>
-    <form class="form-inline my-2 my-lg-0" *ngIf='!authGuard.auth.isAuthenticated()'>
+    <form class="form-inline my-2 my-lg-0" *ngIf='!authGuard.auth.getJwtToken()'>
         <button class="btn btn-outline-danger my-2 my-sm-0" type="submit" routerLink="/register">Register</button>
     </form>
+    
+    <!-- <form class="form-inline my-2 my-lg-0" *ngIf='authGuard.auth.getJwtToken()'>
+        <button class="btn btn-outline-danger my-2 my-sm-0" type="submit" (click)="refresh()">refresh</button>
+    </form> -->
 </nav>
 
 

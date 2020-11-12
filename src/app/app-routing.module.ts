@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegistrationComponent } from './components/registration/registration.component';
@@ -13,6 +14,7 @@ const routes: Routes = [
   {path:'register', component: RegistrationComponent, canActivate: [LoggerGuard]},
   {path:'login', component: LoginComponent, canActivate: [LoggerGuard]},
   // {path:'add_survey/:id', component: SurveyComponent, canActivate: [AuthGuard]},
+  // {path:'main',  component: AppComponent},
   {path:'add_survey',  component: SurveyComponent,  canActivate: [AuthGuard]},
   {path:'home', component: HomeComponent, canActivate: [AuthGuard]}
 ];

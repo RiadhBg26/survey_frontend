@@ -3,7 +3,7 @@ import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { SurveyModelServer, SurveyResponse } from 'models/surveyModel';
 import { UserModelServer } from 'models/userModel';
 import { map } from 'rxjs/operators';
-import { AuthService } from 'src/app/services/auth.service';
+import { AuthenticationService } from 'src/app/services/auth.service';
 import { SurveyService } from 'src/app/services/survey.service';
 import { UserService } from 'src/app/services/user.service';
 //@ts-ignore
@@ -24,14 +24,14 @@ export class SurveyComponent implements OnInit {
   username: string
   user: UserModelServer
   surveys: any[] = []
-  token
+  token;
+  decodedToken
 
   constructor(private surveyService: SurveyService,
     private userService: UserService,
     private router: Router,
     private route: ActivatedRoute,
-    private authService: AuthService) {
-    // this.getSecuredRoute()
+    private authService: AuthenticationService) {
   }
 
   ngOnInit(): void {
@@ -48,15 +48,12 @@ export class SurveyComponent implements OnInit {
       .subscribe(params => {
         this.token = params.get('token')
         this.token = localStorage.getItem('token');
-
-        var decodedToken = jwt_decode(this.token);
-        // console.log(decodedToken);
-        this.id = decodedToken.iss._id
-        // let storedId = localStorage.setItem('id', this.id.toString())
+        this.decodedToken = jwt_decode(this.token);
+        // console.log(this.decodedToken);
+        // this.id = this.decodedToken.user.user._id        
+        this.id = localStorage.getItem('id')
         this.userService.getSingleUser(this.id).subscribe(data => {
           this.user = data
-          console.log(data);
-          
           this.surveys = this.user.surveys
         });
 
@@ -64,38 +61,36 @@ export class SurveyComponent implements OnInit {
           const urlTree = this.router.createUrlTree([], {
             queryParams: { token: this.token },
             queryParamsHandling: "merge",
-            preserveFragment: true });
-          this.router.navigateByUrl(urlTree); 
+            preserveFragment: true
+          });
+
+          console.log(urlTree);
+          // this.router.navigateByUrl(urlTree);
+
         };
       });
 
-
   }
-
-
-  // getSurveys() {
-  //   this.surveyService.getSurveys().subscribe((data: SurveyResponse) => {
-  //     this.surveys = data.surveys
-  //   })
-  // }
-  // getSecuredRoute() {
-  //   this.userService.getSecuredRoute().subscribe(
-  //     data => this.username = data.toString(),
-  //     error => this.router.navigate(['/login'])
-  //   )
-  // }
   postSurvey() {
-    const survey = {
-      userId: this.id,
-      title: this.title.trim(),
-      description: this.description.trim(),
-      choice: this.choice,
+    this.id = localStorage.getItem('id')
+    console.log(this.decodedToken);
+    
+    if (!this.authService.getJwtToken()) {
+      return
+    } else {
+
+      const survey = {
+        userId: this.id,
+        title: this.title.trim(),
+        description: this.description.trim(),
+        choice: this.choice,
+      }
+      this.surveyService.postSurvey(survey).subscribe(res => {
+        console.log(res);
+      })
+      this.title = "";
+      this.description = ""
     }
-    this.surveyService.postSurvey(survey).subscribe(res => {
-      console.log(res);
-    })
-    this.title = "";
-    this.description = ""
   }
 
   deleteSurvey(id) {

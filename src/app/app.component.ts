@@ -1,11 +1,15 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthGuard } from './guards/auth.guard';
-import { AuthService } from './services/auth.service';
+import { AuthenticationService } from './services/auth.service';
 import { SurveyService } from './services/survey.service';
 import { UserService } from './services/user.service';
+
+import { NgxSpinnerService } from "ngx-spinner";
+
 //@ts-ignore
 import jwt_decode from 'jwt-decode';
+import { AuthService, GoogleLoginProvider, SocialUser } from 'angularx-social-login';
 
 @Component({
   selector: 'app-root',
@@ -18,18 +22,17 @@ export class AppComponent {
   user;
   surveys
   token;
-  username
+  message: string
   isAuthed: boolean;
   timeout;
-  expirationTime;
-  creationTime
   constructor(private surveyService: SurveyService,
     private userService: UserService,
     private router: Router,
     private route: ActivatedRoute,
-    private authService: AuthService,
-    public authGuard: AuthGuard) {
-    this.getSecuredRoute()
+    private authService: AuthenticationService,
+    public authGuard: AuthGuard,
+    private spinner: NgxSpinnerService,
+    private socialAuthService: AuthService) {
   }
 
   ngOnInit(): void {
@@ -47,48 +50,49 @@ export class AppComponent {
       .subscribe(params => {
         this.token = params.get('token');
         this.token = localStorage.getItem('token');
-        if (params.get('token') != this.token && this.authService.isAuthenticated() == true) {
+        if (params.get('token') != this.token) {
           const urlTree = this.router.createUrlTree([], {
             queryParams: { token: this.token },
             queryParamsHandling: "merge",
-            preserveFragment: true });
-          this.router.navigateByUrl(urlTree); 
+            preserveFragment: true
+          });
+          this.router.navigateByUrl(urlTree);
         }
       });
-      if (this.authService.isAuthenticated() == false) {
-        localStorage.clear()
-        this.router.navigate(['/login'])
-      }
-      this.tokenDecode()
-  }
+    this.getSecuredRoute()
+    this.tokenDecode()
+    // this.authService.checkToken()
+    this.refresh()
+  };
+
 
   getSecuredRoute() {
     this.userService.getSecuredRoute().subscribe(
-      data => {this.username = data.email},
+      data => {
+        this.message = data.message;
+      },
       error => this.router.navigate(['/login'])
     )
   };
 
   tokenDecode() {
     var decodedToken = jwt_decode(this.token);
-    console.log(decodedToken);
+    // console.log(decodedToken);
     this.timeout = decodedToken.exp
-    this.id = decodedToken.iss._id
-    
-    this.expirationTime = decodedToken.exp
-    this.creationTime = decodedToken.iat
-    
-    console.log(new Date(this.creationTime));
-    console.log(new Date(this.expirationTime));
-
-  }
-
-
-
-  logout() {
-    localStorage.clear()
-    location.reload()
+    this.id = decodedToken.user._id
   };
 
+  logout() {
+    this.authService.logout()
+  };
+
+  refresh() {
+    this.authService.refresh().subscribe(res => {
+      if (res.error) {
+        alert(res.error)
+        this.authService.onDeleteUser()
+      }
+    })
+  }
 
 }

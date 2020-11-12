@@ -18,7 +18,7 @@
         </div>
     </div>
 
-    <h2 class="text-center">my surveys</h2>
+    <h2 class="text-center" *ngIf="surveys">my surveys</h2>
     <div class="container" *ngFor="let survey of surveys">
         <div>
             <div class="row jumbotron">

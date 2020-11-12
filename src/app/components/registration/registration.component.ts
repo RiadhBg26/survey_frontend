@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { UserModelServer, UserResponse } from '../../../../models/userModel';
+import { AuthService, GoogleLoginProvider, SocialUser } from 'angularx-social-login';
 @Component({
   selector: 'app-registration',
   templateUrl: './registration.component.html',
@@ -27,12 +28,13 @@ export class RegistrationComponent implements OnInit {
   option;
   inValidMessage;
   message: string;
-
+  socialUser: SocialUser
   constructor(
     private userService: UserService,
     private surveyService: SurveyService,
     private router: Router,
-    private http: HttpClient) {
+    private http: HttpClient,
+    private socialAuthService: AuthService) {
 
     this.registrationForm = new FormGroup({
       email: new FormControl('test@gmail.com', [Validators.required, Validators.pattern(this.emailPattern)]),
@@ -68,6 +70,20 @@ export class RegistrationComponent implements OnInit {
       })
     };
   };
+
+  google() {
+    this.socialAuthService.authState.subscribe((user) => {
+      this.socialUser = user;
+      console.log(this.socialUser);
+      const token = this.socialUser
+      const data = {token}
+      this.userService.google(token).subscribe(res => {
+        console.log('OAuth reponse => ', res);
+        
+      })
+      
+    })
+  }
 };
 
 

@@ -57,6 +57,11 @@ export class UserService {
     return this.httpClient.post<UserLoginResponse>(`${this.SERVER_URL}/users/login`, data)
   }
 
+  google(data) {
+    return this.httpClient.post<UserLoginResponse>(`${this.SERVER_URL}/users/oauth/google`, {
+      'access_token': data
+    })
+  }
   
 
   // ERROR HANDLING

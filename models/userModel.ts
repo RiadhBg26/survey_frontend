@@ -19,6 +19,7 @@ export interface ResponseData {
 
   export interface UserLoginResponse {
     token: string;
+    refreshToken: string;
     user: UserModelServer;
     userId: any
   }

@@ -10,6 +10,7 @@ import { UserService } from 'src/app/services/user.service';
 
 import { NgxSpinnerService } from "ngx-spinner";
 import { ToastrService } from 'ngx-toastr';
+import { AuthenticationService } from 'src/app/services/auth.service';
 
 
 @Component({
@@ -44,6 +45,7 @@ export class HomeComponent implements OnInit {
   token
   constructor(private surveyService: SurveyService,
     private userService: UserService,
+    private authService: AuthenticationService,
     private router: Router,
     private route: ActivatedRoute,
     private spinner: NgxSpinnerService,
@@ -67,21 +69,22 @@ export class HomeComponent implements OnInit {
       .subscribe(params => {
         this.token = params.get('token')
         this.token = localStorage.getItem('token')
-        
+
         if (params.get('token') != this.token) {
           const urlTree = this.router.createUrlTree([], {
             queryParams: { token: this.token },
             // queryParamsHandling: "merge",
-            preserveFragment: true });
-        
-          this.router.navigateByUrl(urlTree); 
+            preserveFragment: true
+          });
+
+          this.router.navigateByUrl(urlTree);
         }
         this.userService.getSingleUser(this.token.id).subscribe(data => {
-          this.user = data
-          this.surveys = this.user.surveys
-
+          this.user = data;
+          this.surveys = this.user.surveys;
         })
       });
+
     this.getSurveys()
     this.getUsers()
   }
@@ -103,49 +106,54 @@ export class HomeComponent implements OnInit {
   };
 
   submitChoice(id) {
-    const data = { choice: this.select.value };
-    const surveys = { id: id, answered: true }
-    if (this.select.value === 'no' || this.select.value == 'yes') {
-
-      this.surveyService.editSurvey(id, data).subscribe((res: SurveyEditionResponse) => {
-        this.message = res.message
-        console.log(this.message);
-        if (this.message == 'answer saved !') {
-          this.select.patchValue('')
-          this.success = true
-          this.err = false
-          this.toastr.success(`${this.message}`, null, {
-            timeOut: 1500,
-            progressBar: false,
-            progressAnimation: 'increasing',
-            positionClass: 'toast-top-right'
-          })
-          return
-        } else
+    if (!this.authService.getJwtToken()) {
+      return
+    } else {
+      const controlValue = this.select.value.toLowerCase()
+      
+      const data = { choice: controlValue};
+      const surveys = { id: id, answered: true }      
+      if (controlValue  == 'no' || controlValue  == 'yes') {
+        this.surveyService.editSurvey(id, data).subscribe((res: SurveyEditionResponse) => {
           this.message = res.message
+          console.log(this.message);
+          if (this.message == 'answer saved !') {
+            this.select.patchValue('')
+            this.success = true
+            this.err = false
+            this.toastr.success(`${this.message}`, null, {
+              timeOut: 1500,
+              progressBar: false,
+              progressAnimation: 'increasing',
+              positionClass: 'toast-top-right'
+            })
+            return
+          } else
+            this.message = res.message
           this.toastr.error(`${this.message}`, null, {
             timeOut: 1500,
             progressBar: false,
             progressAnimation: 'increasing',
             positionClass: 'toast-top-right'
           })
+          this.select.patchValue('')
+          this.success = false
+          this.err = true
+          return
+        })
+      } else {
         this.select.patchValue('')
         this.success = false
         this.err = true
+        this.message = 'answer should be only yes or no'
+        this.toastr.error(`${this.message}`, null, {
+          timeOut: 1500,
+          progressBar: false,
+          progressAnimation: 'increasing',
+          positionClass: 'toast-top-right'
+        })
         return
-      })
-    } else {
-      this.select.patchValue('')
-      this.success = false
-      this.err = true
-      this.message = 'answer should be only yes or no'
-      this.toastr.error(`${this.message}`, null, {
-        timeOut: 1500,
-        progressBar: false,
-        progressAnimation: 'increasing',
-        positionClass: 'toast-top-right'
-      })
-      return
+      }
     }
   };
 
