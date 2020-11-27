@@ -1,40 +1,42 @@
-
 <div class="container mt-4">
     <div>
-        <h2 class="text-center">Add survey</h2>
         <div class="row jumbotron">
-            <div class="col-sm-4 form-group">
-                <label for="ttile">title</label>
-                <input type="text" class="form-control" placeholder="title" required [(ngModel)]="title">
+            <div class="card-title">
+                <h2>Create survey</h2>
             </div>
-            <div class="col-sm-4 form-group">
-                <label for="pass">description</label>
-                <textarea type="text" class="form-control" id="pass" placeholder="description" required
+            <div class="controls col-sm-6 col-md-6 col-xs-6">
+                <input type="text" placeholder="title" required [(ngModel)]="title">
+            </div>
+            <div class="controls col-sm-6 col-md-6 col-xs-4">
+                <textarea type="text" id="description" placeholder="description" maxlength="120" required
                     [(ngModel)]="description"></textarea>
             </div>
-            <div class="col-sm-12 form-group mb-0">
-                <button class="btn btn-primary offset-6" (click)="postSurvey()">save survey</button>
+            <div class="button">
+                <button class="btn btn-primary" (click)="postSurvey()">save survey</button>
             </div>
         </div>
     </div>
 
-    <h2 class="text-center" *ngIf="surveys">my surveys</h2>
-    <div class="container" *ngFor="let survey of surveys">
-        <div>
-            <div class="row jumbotron">
-                <div class="col-sm-4 form-group">
-                    <label for="ttile">title</label>
-                    <input type="text" class="form-control" readonly value="{{survey.title}}" >
-                </div>
-                <div class="col-sm-4 form-group">
-                    <label for="pass">description</label>
-                    <textarea type="text" class="form-control" id="pass" readonly >{{survey.description}}</textarea>
-                </div>
-                
-                <div class="col-sm-12 form-group mb-0">
-                    <button class="btn btn-danger offset-6" (click)="deleteSurvey(survey._id)">Delete</button>
-                </div>
-            </div>
-        </div>
-    
+
+    <div class="container" >
+        <table class="table col-md-12 " *ngIf="surveys.length > 0">
+            <thead>
+                <tr id="header">
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody *ngFor="let survey of surveys">
+                <tr id="body">
+                    <td>{{survey.title}} </td>
+                    <td>{{survey.description}} </td>
+                    <td><button class="btn btn-danger button del" (click)="deleteSurvey(survey._id)">X</button></td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+
 </div>

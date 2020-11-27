@@ -1,0 +1,98 @@
+.container, .jumbotron {
+    background-image: url(../../../../../../../../../bk.png);
+    padding-bottom: 10px;
+}
+.jumbotron {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.controls {
+    margin-bottom: 24px;
+  }
+  
+  .controls label {
+    display: block;
+    letter-spacing: 0.5px !important;
+    margin-bottom: 8px !important;
+  }
+  
+  .controls input {
+    letter-spacing: 0.5px;
+    font-size: 1.1em;
+    padding: 0 24px;
+  }
+
+  .controls input::placeholder {
+    color: #ddd;
+  }
+  input, textarea, button {
+    width: 100%;
+    max-width: 100%;
+    height: 52px;
+    border: none;
+    background-color: rgba(255, 255, 255, 0.15);
+    outline: none;
+    border-radius: 5px;
+  }
+  #description {
+      border-radius: 5px;
+      height: 200px !important;
+      line-break: 50px;
+      word-wrap: break-word;
+      padding: 20px !important;
+      resize: none;
+  }
+  .controls textarea::placeholder {
+    color: #ddd;
+  }
+
+  table {
+    /* transform: translate(-50%, -50%); */
+    border-collapse: collapse;
+    border: 1px solid #bdc3c7;
+    box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.2), -1px -1px 8px rgba(0, 0, 0, 0.2);
+    table-layout: fixed;
+}
+
+tr {
+    transition: all .2s ease-in;
+    /* cursor: pointer; */
+}
+
+th,
+td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    word-wrap:break-word
+}
+
+#header {
+    background-color: #16a085;
+    color: #fff;
+}
+
+h1 {
+    font-weight: 600;
+    text-align: center;
+    background-color: #16a085;
+    color: #fff;
+    padding: 10px 0px;
+}
+
+#body:hover {
+    transform: scale(1.02);
+    box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.2), -1px -1px 8px rgba(0, 0, 0, 0.2);
+}
+tr .del{
+    width: 20% !important;
+    float: right;
+}
+
+@media only screen and (max-width: 768px) {
+    table {
+        width: 90%;
+    }
+}
+

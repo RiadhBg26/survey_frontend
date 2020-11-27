@@ -8,6 +8,7 @@ import { SurveyService } from 'src/app/services/survey.service';
 import { UserService } from 'src/app/services/user.service';
 //@ts-ignore
 import jwt_decode from 'jwt-decode';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -26,12 +27,13 @@ export class SurveyComponent implements OnInit {
   surveys: any[] = []
   token;
   decodedToken
-
+  message: string
   constructor(private surveyService: SurveyService,
     private userService: UserService,
     private router: Router,
     private route: ActivatedRoute,
-    private authService: AuthenticationService) {
+    private authService: AuthenticationService,
+    private toastr: ToastrService) {
   }
 
   ngOnInit(): void {
@@ -48,10 +50,11 @@ export class SurveyComponent implements OnInit {
       .subscribe(params => {
         this.token = params.get('token')
         this.token = localStorage.getItem('token');
-        this.decodedToken = jwt_decode(this.token);
+        // this.decodedToken = jwt_decode(this.token);
         // console.log(this.decodedToken);
         // this.id = this.decodedToken.user.user._id        
         this.id = localStorage.getItem('id')
+        // console.log('id => ', this.id);
         this.userService.getSingleUser(this.id).subscribe(data => {
           this.user = data
           this.surveys = this.user.surveys
@@ -64,8 +67,8 @@ export class SurveyComponent implements OnInit {
             preserveFragment: true
           });
 
-          console.log(urlTree);
-          // this.router.navigateByUrl(urlTree);
+          // console.log(urlTree);
+          this.router.navigateByUrl(urlTree);
 
         };
       });
@@ -73,31 +76,36 @@ export class SurveyComponent implements OnInit {
   }
   postSurvey() {
     this.id = localStorage.getItem('id')
-    console.log(this.decodedToken);
-    
     if (!this.authService.getJwtToken()) {
       return
     } else {
 
       const survey = {
         userId: this.id,
-        title: this.title.trim(),
-        description: this.description.trim(),
-        choice: this.choice,
+        title: this.title.trim().toLocaleLowerCase(),
+        description: this.description.trim().toLocaleLowerCase(),
       }
       this.surveyService.postSurvey(survey).subscribe(res => {
-        console.log(res);
+        this.message = res.msg
+        this.toastr.success(`${this.message}`, null, {
+          timeOut: 1500,
+          progressBar: false,
+          progressAnimation: 'increasing',
+          positionClass: 'toast-top-right'
+        })
+        
       })
       this.title = "";
       this.description = ""
+      location.reload()
     }
   }
 
   deleteSurvey(id) {
     this.surveyService.deleteSurvey(id).subscribe(res => {
       this.surveys.slice(id, 1)
-      console.log(res);
-      this.surveys = this.surveys
+      console.log(this.surveys);
+      
     })
   }
 

@@ -24,12 +24,14 @@ export class AppComponent {
   token;
   message: string
   isAuthed: boolean;
-  timeout;
+  timeout: number;
+  socialUser: SocialUser;
+  
   constructor(private surveyService: SurveyService,
     private userService: UserService,
     private router: Router,
     private route: ActivatedRoute,
-    private authService: AuthenticationService,
+    public authService: AuthenticationService,
     public authGuard: AuthGuard,
     private spinner: NgxSpinnerService,
     private socialAuthService: AuthService) {
@@ -60,7 +62,7 @@ export class AppComponent {
         }
       });
     this.getSecuredRoute()
-    this.tokenDecode()
+    // this.tokenDecode()
     // this.authService.checkToken()
     this.refresh()
   };
@@ -95,4 +97,25 @@ export class AppComponent {
     })
   }
 
+  google() {
+    this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID)
+    // console.log(this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID));
+    
+    this.socialAuthService.authState.subscribe((user) => {
+      this.socialUser = user;
+      // console.log(this.socialUser);
+      const token = this.socialUser.authToken
+      const access_token = {token}
+      this.userService.google(access_token.token).subscribe(res => {
+        console.log('OAuth reponse => ', res.user._id);
+        this.id = res.user._id
+        console.log(access_token.token);
+        localStorage.setItem('token', access_token.token.toString())
+        localStorage.setItem('id', this.id.toString())
+        this.router.navigate(['/add_survey'], {queryParams: {token: access_token.token}})
+        
+      })
+      
+    })
+  }
 }

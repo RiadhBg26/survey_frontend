@@ -6,10 +6,19 @@ import { JwtModule } from "@auth0/angular-jwt";
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-
 import { MatChipsModule } from '@angular/material/chips';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatButtonModule } from '@angular/material/button';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {MatNativeDateModule} from '@angular/material/core';
+import {MatSelectModule} from '@angular/material/select';
+import {MatRadioModule} from '@angular/material/radio';
+import {MatGridListModule} from '@angular/material/grid-list';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+
+
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -19,11 +28,6 @@ import { RegistrationComponent } from './components/registration/registration.co
 import { LoginComponent } from './components/login/login.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HomeComponent } from './components/home/home.component';
-
-import { MatInputModule } from '@angular/material/input';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatButtonModule } from '@angular/material/button';
-// import {MatChipsModule } from '@angular/material/chips/chip';
 import { ToastrModule } from 'ngx-toastr';
 import { NgxSpinnerModule } from "ngx-spinner";
 
@@ -71,12 +75,20 @@ export function provideConfig() {
         disallowedRoutes: ["http://localhost:3000"],
       }
     }),
+    MatInputModule,
+    MatSnackBarModule,
+    MatButtonModule,
     MatChipsModule,
     MatFormFieldModule,
     MatIconModule,
+    MatSelectModule,
+    MatRadioModule,
+    MatNativeDateModule,
+    MatGridListModule,
     NgxSpinnerModule,
     ToastrModule.forRoot(),
     SocialLoginModule,
+    MatProgressBarModule
 
 
 

@@ -43,6 +43,7 @@ export class HomeComponent implements OnInit {
   success = false
   select: FormControl
   token
+  answer;
   constructor(private surveyService: SurveyService,
     private userService: UserService,
     private authService: AuthenticationService,
@@ -79,12 +80,13 @@ export class HomeComponent implements OnInit {
 
           this.router.navigateByUrl(urlTree);
         }
-        this.userService.getSingleUser(this.token.id).subscribe(data => {
+        this.id = localStorage.getItem('id')
+        this.userService.getSingleUser(this.id).subscribe(data => {
           this.user = data;
           this.surveys = this.user.surveys;
+          
         })
       });
-
     this.getSurveys()
     this.getUsers()
   }
@@ -96,7 +98,7 @@ export class HomeComponent implements OnInit {
   getSurveys() {
     this.surveyService.getSurveys().subscribe((data: SurveyResponse) => {
       this.surveys = data.surveys
-      console.log(this.surveys);
+      // console.log(this.surveys);
       for (let i = 0; i < this.surveys.length; i++) {
         this.yesPercentage = this.surveys[i].yesPercentage
         this.noPercentage = this.surveys[i].noPercentage
@@ -109,7 +111,13 @@ export class HomeComponent implements OnInit {
     if (!this.authService.getJwtToken()) {
       return
     } else {
+      /* ____________with radio button ____________*/
+      // console.log(this.answer);
+      // this.select.patchValue(this.answer)
+      /* ________________________________________ */
+      
       const controlValue = this.select.value.toLowerCase()
+      console.log(controlValue, this.answer);
       
       const data = { choice: controlValue};
       const surveys = { id: id, answered: true }      
@@ -162,6 +170,12 @@ export class HomeComponent implements OnInit {
     location.reload()
   };
 
+
+  getValue() {
+    let x = document.querySelector('input[name="radio"]:checked') as HTMLInputElement;
+    console.log(x.value);
+    
+  }
 };
 
 

@@ -7,25 +7,38 @@
   <p style="font-size: 20px; color: white">Loading...</p>
 </ngx-spinner>
 
-<div class="container mt-4">
-    <form [formGroup]="loginForm">
-        <h2 class="text-center">Login</h2>
-        <div class="row jumbotron justify-content-center">
-            <div class="col-sm-4 form-group">
-                <label for="email">Email</label>
-                <input type="email" class="form-control" name="email" id="email" placeholder="Enter your email."
-                    required formControlName="email">
-            </div>
-            <div class="col-sm-4 form-group">
-                <label for="pass">Password</label>
-                <input type="password" name="password" class="form-control" id="pass" placeholder="Enter your password."
-                    required formControlName="password">
-            </div>
 
-            <div class="col-sm-12 form-group mb-0">
-                <button class="btn btn-primary offset-6" (click)="login()">Login</button>
-            </div>
+<div class="container">
+    <div class="title">Sign in with</div>
+    <div class="social-login">
+        <button>
+            <i class="fab fa-google"></i>
+            facebook
+        </button>
+        <button>
+            <i class="fab fa-facebook-f"></i>
+            facebook
+        </button>
+    </div>
 
+    <p class="or"> <span></span> Or <span></span> </p>
+
+    <form  [formGroup]="loginForm">
+        <div class="controls">
+            <label for="username">Email</label>
+            <input type="email" 
+             name="email" id="email" placeholder="Enter your email." required
+             formControlName="email">
         </div>
+        <div class="controls">
+            <label for="password">Password</label>
+            <input type="Password" name="password" 
+             id="pass" placeholder="Enter your password." required
+             formControlName="password">
+        </div>
+
+        <button type="submit" (click)="login()">Sign in</button>
     </form>
+
+    <p class="additional-act" [routerLink]="['/register']" routerLinkActive="router-link-active" >Don't have an account? <span> Register</span></p>
 </div>

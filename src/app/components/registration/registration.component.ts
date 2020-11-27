@@ -28,6 +28,7 @@ export class RegistrationComponent implements OnInit {
   option;
   inValidMessage;
   message: string;
+  id
   socialUser: SocialUser
   constructor(
     private userService: UserService,
@@ -71,14 +72,23 @@ export class RegistrationComponent implements OnInit {
     };
   };
 
+  //sign in with google
   google() {
+    this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID)
+    // console.log(this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID));
+    
     this.socialAuthService.authState.subscribe((user) => {
       this.socialUser = user;
-      console.log(this.socialUser);
-      const token = this.socialUser
-      const data = {token}
-      this.userService.google(token).subscribe(res => {
-        console.log('OAuth reponse => ', res);
+      // console.log(this.socialUser);
+      const token = this.socialUser.authToken
+      const access_token = {token}
+      this.userService.google(access_token.token).subscribe(res => {
+        console.log('OAuth reponse => ', res.user._id);
+        this.id = res.user._id
+        console.log(access_token.token);
+        localStorage.setItem('token', access_token.token.toString())
+        localStorage.setItem('id', this.id.toString())
+        this.router.navigate(['/add_survey'], {queryParams: {token: access_token.token}})
         
       })
       

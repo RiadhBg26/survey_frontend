@@ -1,20 +1,7 @@
-
-<h2 class="text-center mt-4" *ngIf="surveys">Surveys list</h2>
+<!-- 
 <div class="container">
 
-
-    <!-- <ng-container *ngIf="err">
-        <span class="text-danger align-middle">
-            <i class="fa fa-close">{{message}}</i>
-        </span>
-    </ng-container>
-    
-    <ng-container
-    *ngIf="success">
-    <span class="text-success align-middle">
-        <i class="fa fa-check"> {{message}}</i>
-    </span>
-</ng-container> -->
+    <h2 class="text-center mt-4">Surveys list</h2>
     <div class="card" *ngFor="let user of users; let i = index">
         <div class="card-body" *ngFor="let survey of users[i].surveys; let i = index">
             <div>
@@ -52,4 +39,41 @@
         </div>
     </div>
 
+</div> -->
+
+<div class="container mt-4">
+    <div class="row pt-4 pb-4">
+        <div  *ngFor="let user of users; let i = index">
+
+            <div class="divContainer" *ngFor="let survey of users[i].local.surveys; let i = index" class="pt-5">
+                <div>
+                    <h1>survey of user: {{survey?.userId?.local?.email}}</h1>
+                </div>
+                <div class="surveyDiv">
+                    <p>Question: {{survey.title}} ?</p>
+                    <!-- <p>Details: {{survey.description}}</p> -->
+                    <!-- <mat-radio-group [(ngModel)]="answer" aria-label="Select an option">
+                        <span class="radio-one">
+                            <mat-radio-button value="yes" [disabled]="">Yes</mat-radio-button>
+                        </span>
+                        <span>
+                            <mat-radio-button value="no">No</mat-radio-button>
+                        </span>
+                    </mat-radio-group> -->
+                    <div class="controls">
+                        <input type="text" [formControl]="select" placeholder="YES / NO">
+                    </div>
+                    <button class="button" (click)="submitChoice(survey._id)">
+                        <i class="fas fa-check"></i>  Submit
+                    </button>
+                </div>
+                <div class="percentage mt-1">
+                    <ul>
+                        <li class="yes"><span >YES:   {{survey.yesPercentage.toFixed(2) }} % </span></li>
+                        <li><span>NO:   {{survey.noPercentage.toFixed(2) }} %</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

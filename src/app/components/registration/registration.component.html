@@ -1,32 +1,40 @@
+<div class="container">
 
-
-    <div class="container">
-        <form [formGroup]="registrationForm">
-            <h2 class="text-center">Register</h2>
-        <div class="row jumbotron">
-            <div class="col-sm-4 form-group">
-                <label for="email">Email</label>
-                <input type="email" class="form-control"
-                 name="email" id="email" placeholder="Enter your email." required
-                 formControlName="email">
-            </div>
-            <div class="col-sm-4 form-group">
-                <label for="pass">Password</label>
-                <input type="Password" name="password" class="form-control"
-                 id="pass" placeholder="Enter your password." required
-                 formControlName="password">
-            </div>
-            <div class="col-sm-4 form-group">
-                <label for="pass2">Confirm Password</label>
-                <input type="Password" name="cnf-password" class="form-control"
-                 id="pass2" placeholder="Re-enter your password." required
-                 formControlName="confirmPassword">
-            </div>
-
-            <div class="col-sm-12 form-group mb-0">
-               <button class="btn btn-primary offset-6" (click)="registerUser()">Submit</button>
-            </div>
-            <!-- <button type="button" (click)="google()" class="btn btn-primary">Sign In with Google</button> -->
-        </div>
-        </form>
+    <div class="title">Sign in with</div>
+    <div class="social-login">
+        <button (click)="google()">
+            <i class="fab fa-google"></i>
+            google
+        </button>
+        <button>
+            <i class="fab fa-facebook-f"></i>
+            facebook
+        </button>
     </div>
+
+    <p class="or"> <span></span> Or <span></span> </p>
+
+    <form [formGroup]="registrationForm">
+        <div class="controls">
+            <label for="username">Email</label>
+            <input type="email" name="email" id="email" placeholder="Enter your email." required
+                formControlName="email">
+        </div>
+        <div class="controls">
+            <label for="password">Password</label>
+            <input type="Password" name="password" id="pass" placeholder="Enter your password." required
+                formControlName="password">
+
+        </div>
+        <div class="controls">
+            <label for="pass2">Confirm Password</label>
+            <input type="Password" name="cnf-password" id="pass2" placeholder="Re-enter your password." required
+                formControlName="confirmPassword">
+        </div>
+        <button type="submit" (click)="registerUser()">Register</button>
+    </form>
+
+    <p class="additional-act" [routerLink]="['/login']" routerLinkActive="router-link-active">Already have an account?
+        <span> Sign in</span></p>
+
+</div>
