@@ -42,6 +42,8 @@ import { SocialLoginModule, AuthServiceConfig } from 'angularx-social-login';
 import {
   GoogleLoginProvider,
 } from 'angularx-social-login';
+import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
+import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 
 const config = new AuthServiceConfig([
   {
@@ -59,7 +61,9 @@ export function provideConfig() {
     SurveyComponent,
     RegistrationComponent,
     LoginComponent,
-    HomeComponent
+    HomeComponent,
+    ResetPasswordComponent,
+    ForgotPasswordComponent
   ],
   imports: [
     BrowserModule,

@@ -10,6 +10,8 @@ import { Router } from "@angular/router";
 import jwt_decode from 'jwt-decode';
 import { environment } from 'src/environments/environment';
 import { ToastrService } from 'ngx-toastr';
+import { AuthService, GoogleLoginProvider, SocialLoginModule, SocialUser } from 'angularx-social-login';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -19,20 +21,21 @@ export class AuthenticationService {
   private readonly JWT_TOKEN = 'JWT_TOKEN';
   private readonly REFRESH_TOKEN = 'REFRESH_TOKEN';
   SERVER_URL = environment.SERVER_URL
-
   authToken: any;
   userId: any;
   timeout;
   token
+  id;
+  socialUser: SocialUser
 
   constructor(private router: Router,
     private httpClient: HttpClient,
-    private jwtHelper: JwtHelperService) { }
+    private jwtHelper: JwtHelperService,
+    private socialAuthService: AuthService,
+    private userService: UserService) { }
 
+  
   // check if the token has expired
-
-
-
   checkToken() {
     const token = localStorage.getItem('token')
     const decodedToken = this.jwtHelper.decodeToken(token);
@@ -43,6 +46,7 @@ export class AuthenticationService {
 
   }
 
+  //refresh token when expired
   refreshToken() {
     return this.httpClient.post<any>(`${this.SERVER_URL}/users/refresh`, {
       'refreshToken': this.getRefreshToken(), 'id': localStorage.getItem('id')
@@ -54,14 +58,15 @@ export class AuthenticationService {
     }));
   }
 
-  private getRefreshToken() {
+  getRefreshToken() {
     const refreshToken = localStorage.getItem('refresh_token')
     return refreshToken;
 
-  }
+  };
+
   getJwtToken() {
     return localStorage.getItem('token');
-  }
+  };
 
   //on logout() delete access_token and refresh_token from session Storage
   logout() {
@@ -78,7 +83,7 @@ export class AuthenticationService {
     })
   }
 
-
+  // if user is deleted from the database
   onDeleteUser() {
     localStorage.removeItem('token');
     localStorage.removeItem('refresh_token');
@@ -86,13 +91,36 @@ export class AuthenticationService {
     location.reload()
   };
 
-
+  //manually refresh token with a button
   refresh(): Observable<any> {
     return this.httpClient.post<any>(`${this.SERVER_URL}/users/refresh`, {
       'refreshToken': this.getRefreshToken(), 'id': localStorage.getItem('id')
     })
   }
+
+  //sign in with google
+  google() {
+    this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID)
+    // console.log(this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID));
+    this.socialAuthService.authState.subscribe((user) => {
+      this.socialUser = user;
+      // console.log(this.socialUser);
+      const token = this.socialUser.authToken
+      const access_token = {token}
+      this.userService.google(access_token.token).subscribe(res => {
+        // console.log('OAuth reponse => ', res.user._id);
+        this.id = res.user._id
+        // console.log(access_token.token);
+        localStorage.setItem('token', access_token.token.toString())
+        localStorage.setItem('id', this.id.toString())
+        this.router.navigate(['/add_survey'], {queryParams: {token: access_token.token}})
+        
+      })
+      
+    })
+  }
 }
+  
 
 
   //count remaining time of token to expire

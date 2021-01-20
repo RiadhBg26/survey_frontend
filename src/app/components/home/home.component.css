@@ -9,7 +9,7 @@
 
 
 .container {
-    background-image: url(../../../../../../../../../bk.png);
+    /* background-image: url(./bk.png); */
     padding-bottom: 10px;
     width: 100%;
     display: flex;
@@ -19,6 +19,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    background-color: slateblue;
 }
 
 .surveyDiv {
@@ -69,6 +70,20 @@ mat-radio-group span {
   outline: none;
   /* border-radius: 5px; */
 }
+.button span {
+  transition: all .2s ease-in;
+}
+.button span:hover, .button i:hover {
+  transform: scale(1.02);
+  box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.2), -1px -1px 8px rgba(0, 0, 0, 0.2);
+  color: #16a085;
+}
+/* .button i:hover {
+  transform: scale(1.02);
+  box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.2), -1px -1px 8px rgba(0, 0, 0, 0.2);
+  color: #16a085;
+  font-size: 20px;
+} */
 .controls {
   margin-bottom: 24px;
   padding-right: 15px;
@@ -88,6 +103,7 @@ mat-radio-group span {
 
 .controls input::placeholder {
   color: #ddd;
+  opacity: .6;
 }
 
 input {

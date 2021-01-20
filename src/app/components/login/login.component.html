@@ -11,9 +11,9 @@
 <div class="container">
     <div class="title">Sign in with</div>
     <div class="social-login">
-        <button>
+        <button (click)="google()">
             <i class="fab fa-google"></i>
-            facebook
+            google
         </button>
         <button>
             <i class="fab fa-facebook-f"></i>
@@ -41,4 +41,6 @@
     </form>
 
     <p class="additional-act" [routerLink]="['/register']" routerLinkActive="router-link-active" >Don't have an account? <span> Register</span></p>
+    <p class="additional-act" [routerLink]="['/forgot_password']" routerLinkActive="router-link-active" >Forgot your password? <span> Reset</span></p>
+
 </div>

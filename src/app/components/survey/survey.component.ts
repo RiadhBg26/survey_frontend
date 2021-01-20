@@ -46,34 +46,52 @@ export class SurveyComponent implements OnInit {
     //     this.surveys = this.user.surveys
     //   });
     // });
-    this.route.queryParamMap
-      .subscribe(params => {
-        this.token = params.get('token')
-        this.token = localStorage.getItem('token');
-        // this.decodedToken = jwt_decode(this.token);
-        // console.log(this.decodedToken);
-        // this.id = this.decodedToken.user.user._id        
+    //get query parameters
+    // this.route.queryParamMap
+    //   .subscribe(params => {
+    //     this.token = params.get('token')
+    //     this.token = localStorage.getItem('token');
+    //     // this.decodedToken = jwt_decode(this.token);
+    //     // console.log(this.decodedToken);
+    //     // this.id = this.decodedToken.user.user._id        
+    //     this.id = localStorage.getItem('id')
+    //     // console.log('id => ', this.id);
+    //     this.userService.getSingleUser(this.id).subscribe(data => {
+    //       this.user = data
+    //       this.surveys = this.user.surveys
+    //     });
+    //     if (params.get('token') != this.token) {
+    //       const urlTree = this.router.createUrlTree([], {
+    //         queryParams: { token: this.token },
+    //         queryParamsHandling: "merge",
+    //         preserveFragment: true
+    //       });
+
+    //       // console.log(urlTree);
+    //       this.router.navigateByUrl(urlTree);
+
+    //     };
+    //   });
+
+    this.getUser();
+
+    this.router.navigate([], {
+      queryParams: {
+        'token': null,
+        'youCanRemoveMultiple': null,
+      },
+      queryParamsHandling: 'merge'
+    })
+  }
+
+  getUser() {
         this.id = localStorage.getItem('id')
-        // console.log('id => ', this.id);
         this.userService.getSingleUser(this.id).subscribe(data => {
           this.user = data
           this.surveys = this.user.surveys
         });
-
-        if (params.get('token') != this.token) {
-          const urlTree = this.router.createUrlTree([], {
-            queryParams: { token: this.token },
-            queryParamsHandling: "merge",
-            preserveFragment: true
-          });
-
-          // console.log(urlTree);
-          this.router.navigateByUrl(urlTree);
-
-        };
-      });
-
   }
+
   postSurvey() {
     this.id = localStorage.getItem('id')
     if (!this.authService.getJwtToken()) {
@@ -85,19 +103,22 @@ export class SurveyComponent implements OnInit {
         title: this.title.trim().toLocaleLowerCase(),
         description: this.description.trim().toLocaleLowerCase(),
       }
-      this.surveyService.postSurvey(survey).subscribe(res => {
+      this.surveyService.postSurvey(survey).subscribe(async res => {
         this.message = res.msg
-        this.toastr.success(`${this.message}`, null, {
-          timeOut: 1500,
-          progressBar: false,
-          progressAnimation: 'increasing',
-          positionClass: 'toast-top-right'
-        })
-        
+        console.log(this.message);
+
+        Promise.resolve(
+          this.toastr.success(`${this.message}`, null, {
+            timeOut: 1500,
+            progressBar: false,
+            progressAnimation: 'increasing',
+            positionClass: 'toast-top-right'
+          })
+        )
+        this.title = "";
+        this.description = ""
+        return await location.reload()
       })
-      this.title = "";
-      this.description = ""
-      location.reload()
     }
   }
 
@@ -105,7 +126,7 @@ export class SurveyComponent implements OnInit {
     this.surveyService.deleteSurvey(id).subscribe(res => {
       this.surveys.slice(id, 1)
       console.log(this.surveys);
-      
+
     })
   }
 

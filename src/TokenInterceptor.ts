@@ -19,7 +19,7 @@ export class TokenInterceptor implements HttpInterceptor {
         }
         return next.handle(request).pipe(catchError(error => {
             if (error instanceof HttpErrorResponse && error.status === 401) {
-                // console.log(error);
+                console.log(error);
                 return this.handle401Error(request, next);
             } else {
                 return throwError(error);
@@ -46,7 +46,7 @@ export class TokenInterceptor implements HttpInterceptor {
                 }));
 
         } else {
-            // console.log('if refreshing');
+            console.log('if refreshing');
             return this.refreshTokenSubject.pipe(
                 filter(token => token != null),
                 take(1),

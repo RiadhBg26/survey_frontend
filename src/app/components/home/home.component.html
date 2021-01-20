@@ -1,45 +1,3 @@
-<!-- 
-<div class="container">
-
-    <h2 class="text-center mt-4">Surveys list</h2>
-    <div class="card" *ngFor="let user of users; let i = index">
-        <div class="card-body" *ngFor="let survey of users[i].surveys; let i = index">
-            <div>
-
-                <h1>surveys of user: {{survey?.userId?.email}}</h1>
-                <div class="row jumbotron ">
-                    <div class="col-sm-4 form-group">
-                        <label for="ttile">title</label>
-                        <input type="text" class="form-control" readonly value="{{survey.title}}">
-                    </div>
-                    <div class="col-sm-4 form-group">
-                        <label for="pass">description</label>
-                        <textarea type="text" class="form-control" id="pass" readonly>{{survey.description}}</textarea>
-                    </div>
-
-                    <div class="col-sm-4 form-group">
-                        <label for="ttile">reply</label>
-                        <input type="text" class="form-control" [formControl]="select" [disabled]="disable == true">
-                    </div>
-                    <div class="form-group">
-                        <div>
-                            YES: {{survey.yesPercentage.toFixed(2) }} %
-                        </div>
-
-                        <div>
-                            NO: {{survey.noPercentage.toFixed(2) }} %
-                        </div>
-                    </div>
-
-                    <div class="col-sm-12 form-group mb-0">
-                        <button class="btn btn-danger offset-6" (click)="submitChoice(survey._id)">submit</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-</div> -->
 
 <div class="container mt-4">
     <div class="row pt-4 pb-4">
@@ -64,7 +22,9 @@
                         <input type="text" [formControl]="select" placeholder="YES / NO">
                     </div>
                     <button class="button" (click)="submitChoice(survey._id)">
-                        <i class="fas fa-check"></i>  Submit
+                        <span>
+                            <i class="fas fa-check"> Submit</i>  
+                        </span> 
                     </button>
                 </div>
                 <div class="percentage mt-1">
@@ -74,6 +34,9 @@
                     </ul>
                 </div>
             </div>
+        </div>
+        <div *ngIf="!users.length">
+            <h3>No surveys posted yet </h3>
         </div>
     </div>
 </div>

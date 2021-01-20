@@ -21,8 +21,11 @@ export class UserService {
 
   /* ____________________________API ROUTES_________________________________________ */
   getSecuredRoute(): Observable<any> {
-    return this.httpClient.get<any>(this.SERVER_URL + '/users/securedpage', {
-      params: new HttpParams().append('token', localStorage.getItem('token'))})
+    return this.httpClient.get<any>(this.SERVER_URL + '/users/securedpage',
+      // {
+      //   params: new HttpParams().append('token', localStorage.getItem('token'))
+      // }
+    )
   }
   // GET ALL UserS
   getUsers(numberOfResults = 10): Observable<UserResponse> {
@@ -58,9 +61,19 @@ export class UserService {
   }
 
   google(access_token) {
-    return this.httpClient.post<any>(`${this.SERVER_URL}/users/oauth/google`, {access_token})
+    return this.httpClient.post<any>(`${this.SERVER_URL}/users/oauth/google`, { access_token })
+  };
+
+  passResetEmail(email): Observable<any> {
+    return this.httpClient.post<any>(`${this.SERVER_URL}/users/reset-password`, {email})
+  };
+
+  resetPassword(password): Observable<any> {
+    return this.httpClient.put<any>(`${this.SERVER_URL}/users/save-password`, {password}, {
+      params: new HttpParams().append('token',  localStorage.getItem('resetToken'))
+    })
   }
-  
+
 
   // ERROR HANDLING
   handleError(error: HttpErrorResponse) {

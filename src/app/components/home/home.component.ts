@@ -66,27 +66,35 @@ export class HomeComponent implements OnInit {
 
     //   });
     // });
-    this.route.queryParamMap
-      .subscribe(params => {
-        this.token = params.get('token')
-        this.token = localStorage.getItem('token')
+    // this.route.queryParamMap
+    //   .subscribe(params => {
+    //     this.token = params.get('token')
+    //     this.token = localStorage.getItem('token')
 
-        if (params.get('token') != this.token) {
-          const urlTree = this.router.createUrlTree([], {
-            queryParams: { token: this.token },
-            // queryParamsHandling: "merge",
-            preserveFragment: true
-          });
+    //     if (params.get('token') != this.token) {
+    //       const urlTree = this.router.createUrlTree([], {
+    //         queryParams: { token: this.token },
+    //         // queryParamsHandling: "merge",
+    //         preserveFragment: true
+    //       });
 
-          this.router.navigateByUrl(urlTree);
-        }
-        this.id = localStorage.getItem('id')
-        this.userService.getSingleUser(this.id).subscribe(data => {
-          this.user = data;
-          this.surveys = this.user.surveys;
+    //       this.router.navigateByUrl(urlTree);
+    //     }
+    //     this.id = localStorage.getItem('id')
+    //     this.userService.getSingleUser(this.id).subscribe(data => {
+    //       this.user = data;
+    //       this.surveys = this.user.surveys;
           
-        })
-      });
+    //     })
+    //   });
+    this.router.navigate([], {
+      queryParams: {
+        'token': null,
+        'youCanRemoveMultiple': null,
+      },
+      queryParamsHandling: 'merge'
+    });
+
     this.getSurveys()
     this.getUsers()
   }
@@ -117,14 +125,14 @@ export class HomeComponent implements OnInit {
       /* ________________________________________ */
       
       const controlValue = this.select.value.toLowerCase()
-      console.log(controlValue, this.answer);
+      // console.log(controlValue, this.answer);
       
       const data = { choice: controlValue};
       const surveys = { id: id, answered: true }      
       if (controlValue  == 'no' || controlValue  == 'yes') {
         this.surveyService.editSurvey(id, data).subscribe((res: SurveyEditionResponse) => {
           this.message = res.message
-          console.log(this.message);
+          // console.log(this.message);
           if (this.message == 'answer saved !') {
             this.select.patchValue('')
             this.success = true

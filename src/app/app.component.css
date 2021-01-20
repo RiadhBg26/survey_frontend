@@ -31,12 +31,13 @@
   }
   nav ul li a{
     color: white;
-    font-size: 17px;
+    font-size: 15px;
     padding: 7px 13px;
     border-radius: 3px;
     text-transform: uppercase;
+    cursor: pointer;
   }
-  a.active,a:hover{
+  a.active,a:hover:not(.logout){
     background: #1b9bff;
     transition: .5s;
   }
@@ -93,5 +94,6 @@
     }
     #check:checked ~ ul{
       left: 0;
+      display: block;
     }
 }

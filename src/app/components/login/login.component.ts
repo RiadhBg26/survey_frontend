@@ -25,7 +25,10 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   users: UserModelServer[] = [];
   user: UserModelServer;
-  id: any = {}
+  id: any = {};
+  message: string;
+
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -37,7 +40,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.loginForm = new FormGroup({
-      email: new FormControl('test@gmail.com', [Validators.required]),
+      email: new FormControl('riadhbg26@gmail.com', [Validators.required]),
       password: new FormControl('test', [Validators.required]),
     })
   }
@@ -48,39 +51,53 @@ export class LoginComponent implements OnInit {
 
   login() {
     if (this.loginForm.valid) {
-      this.userService.login(this.loginForm.value).subscribe((loginResponse: UserLoginResponse) => {
+      this.userService.login(this.loginForm.value).subscribe((loginResponse: any) => {
         this.user = loginResponse.user
         this.id = loginResponse.userId;
         const token = loginResponse.token;
-        const refreshToken = loginResponse.refreshToken
-        
-        localStorage.setItem('token', token.toString())
-        localStorage.setItem('refresh_token', refreshToken.toString())
-        localStorage.setItem('id', this.id.toString())
-        
-        // this.authService.storeUserData(token, this.id)
-        // this.authService.storeUserData(token);
+        const refreshToken = loginResponse.refreshToken;
 
-        // this.spinner.show()
+        localStorage.setItem('token', token.toString());
+        localStorage.setItem('refresh_token', refreshToken.toString());
+        localStorage.setItem('id', this.id.toString());
+
+        this.spinner.show()
         setTimeout(() => {
           /** spinner ends after 5 seconds */
-          // this.spinner.hide();
-          this.router.navigate(['/add_survey'], { queryParams: { token } })
-          this.toastr.success(`welcome`, null, {
-            timeOut: 1000,
+          this.spinner.hide();
+          this.router.navigate(['/add_survey']);
+          this.message = loginResponse.message
+          this.toastr.success(this.message, null, {
+            timeOut: 5000,
             progressBar: false,
             progressAnimation: 'increasing',
             positionClass: 'toast-top-right'
           })
-        }, 0)
+        }, 3000);
+      },
+        err => {
+          console.log(err);
+          this.message = err.error
+          this.toastr.error(this.message, null, {
+            timeOut: 5000,
+            progressBar: false,
+            progressAnimation: 'increasing',
+            positionClass: 'toast-top-right'
+          })
 
-
-      })
+        })
     } else {
+      this.userService.login(this.loginForm.value).subscribe(
+        res => console.log(res),
+        err => console.log(err)
+      )
       return
     }
   };
 
+  google() {
+    this.authService.google()
+  }
 
 }
 

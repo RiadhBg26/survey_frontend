@@ -1,11 +1,12 @@
 .container, .jumbotron {
-    background-image: url(../../../../../../../../../bk.png);
+    /* background-image: url(./bk.jpg); */
     padding-bottom: 10px;
 }
 .jumbotron {
     display: flex;
     flex-direction: column;
     align-items: center;
+    background-color: #06473a;
 }
 .controls {
     margin-bottom: 24px;
@@ -25,6 +26,7 @@
 
   .controls input::placeholder {
     color: #ddd;
+    opacity: .6;
   }
   input, textarea, button {
     width: 100%;
@@ -45,6 +47,7 @@
   }
   .controls textarea::placeholder {
     color: #ddd;
+    opacity: .6;
   }
 
   table {

@@ -11,10 +11,11 @@
     <label for="check" class="checkbtn">
       <i class="fas fa-bars"></i>
     </label>
-    <label class="logo">Survey App</label>
+    <label class="logo">{{message}}</label>
     <ul>
       <li><a [routerLink]="['/home']" routerLinkActive="router-link-active" >Home</a></li>
       <li><a [routerLink]="['/add_survey']" routerLinkActive="router-link-active" >Survey</a></li>
+      <li><a [routerLink]="['/forgot_password']" routerLinkActive="router-link-active" >Reset password</a></li>
       <li><a class="logout" (click)='logout()'>Logout</a></li>
     </ul>
     
