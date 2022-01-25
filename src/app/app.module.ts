@@ -48,7 +48,7 @@ import { ForgotPasswordComponent } from './components/forgot-password/forgot-pas
 const config = new AuthServiceConfig([
   {
     id: GoogleLoginProvider.PROVIDER_ID,
-    provider: new GoogleLoginProvider('104304320546-kje8r482nvegkfj3n30rdk07eflfnedm.apps.googleusercontent.com')
+    provider: new GoogleLoginProvider('')
   }
 ]);
 export function provideConfig() {
